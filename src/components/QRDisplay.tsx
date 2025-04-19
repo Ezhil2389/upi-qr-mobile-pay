@@ -108,22 +108,22 @@ const QRDisplay = ({ upiId, amount }: QRDisplayProps) => {
             </div>
           </div>
           
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             {[
-              { name: "Google Pay", app: "gpay", color: "bg-green-500", logo: PaymentAppLogos.gpay },
-              { name: "Paytm", app: "paytm", color: "bg-blue-500", logo: PaymentAppLogos.paytm },
-              { name: "PhonePe", app: "phonepe", color: "bg-purple-500", logo: PaymentAppLogos.phonepe }
-            ].map(({ name, app, color, logo: Logo }) => (
+              { name: "Google Pay", app: "gpay", logo: PaymentAppLogos.gpay },
+              { name: "Paytm", app: "paytm", logo: PaymentAppLogos.paytm },
+              { name: "PhonePe", app: "phonepe", logo: PaymentAppLogos.phonepe }
+            ].map(({ name, app, logo: Logo }) => (
               <Button 
                 key={app}
                 variant="outline"
-                className={`flex flex-col items-center justify-center p-3 h-auto ${color} text-white hover:opacity-90 transition-opacity space-y-2 group`}
+                className="flex items-center justify-start gap-3 w-full bg-white border border-gray-200 shadow-sm rounded-lg py-3 px-4 hover:shadow-md hover:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all group"
                 onClick={() => handleOpenPaymentApp(app)}
               >
-                <div className="bg-white/20 p-2 rounded-full group-hover:bg-white/30 transition-all">
+                <span className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-100 group-hover:bg-blue-50">
                   <Logo />
-                </div>
-                <span className="text-xs font-medium tracking-tight">{name}</span>
+                </span>
+                <span className="text-base font-medium text-gray-800 tracking-tight group-hover:text-blue-700">{name}</span>
               </Button>
             ))}
           </div>
