@@ -1,66 +1,41 @@
 
-import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { QrCode } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface QRDisplayProps {
   upiId: string;
-  amount?: number;
-  description?: string;
+  amount: number;
 }
 
-const QRDisplay = ({ upiId, amount = 0, description = "" }: QRDisplayProps) => {
-  const [qrImage, setQrImage] = useState<string>("");
+const QRDisplay = ({ upiId, amount }: QRDisplayProps) => {
   const { toast } = useToast();
 
-  useEffect(() => {
-    // Generate QR code
-    const upiLink = generateUpiLink(upiId, amount, description);
-    const encodedUpiLink = encodeURIComponent(upiLink);
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodedUpiLink}`;
-    setQrImage(qrCodeUrl);
-  }, [upiId, amount, description]);
-
-  const generateUpiLink = (id: string, amt: number, desc: string): string => {
-    let upiUrl = `upi://pay?pa=${id}`;
-    if (amt > 0) upiUrl += `&am=${amt}`;
-    if (desc) upiUrl += `&pn=${encodeURIComponent(desc)}`;
-    return upiUrl;
-  };
+  // Hardcoded QR code URL - replace with your actual QR code URL
+  const qrImage = "https://example.com/your-qr-code.png";
 
   const handleOpenPaymentApp = (app: string) => {
-    const upiLink = generateUpiLink(upiId, amount, description);
-    
     let appLink: string;
     
     switch (app) {
       case "gpay":
-        appLink = `gpay://upi/pay?pa=${upiId}`;
-        if (amount > 0) appLink += `&am=${amount}`;
-        if (description) appLink += `&pn=${encodeURIComponent(description)}`;
+        appLink = `gpay://upi/pay?pa=${upiId}&am=${amount}`;
         break;
       case "paytm":
-        appLink = `paytmmp://pay?pa=${upiId}`;
-        if (amount > 0) appLink += `&am=${amount}`;
-        if (description) appLink += `&pn=${encodeURIComponent(description)}`;
+        appLink = `paytmmp://pay?pa=${upiId}&am=${amount}`;
         break;
       case "phonepe":
-        appLink = `phonepe://pay?pa=${upiId}`;
-        if (amount > 0) appLink += `&am=${amount}`;
-        if (description) appLink += `&pn=${encodeURIComponent(description)}`;
+        appLink = `phonepe://pay?pa=${upiId}&am=${amount}`;
         break;
       default:
-        appLink = upiLink;
+        appLink = `upi://pay?pa=${upiId}&am=${amount}`;
     }
     
     try {
       window.location.href = appLink;
       
-      // Set a timeout to check if the app opened
       setTimeout(() => {
-        // If we're still on the same page, assume app didn't open
         toast({
           description: "If the app didn't open, you may need to install it or scan the QR code directly.",
           variant: "default",
@@ -100,9 +75,7 @@ const QRDisplay = ({ upiId, amount = 0, description = "" }: QRDisplayProps) => {
           <div className="text-center mt-2">
             <p className="text-lg font-medium">Scan to pay via UPI</p>
             <p className="text-sm text-muted-foreground mb-4">UPI ID: {upiId}</p>
-            {amount > 0 && (
-              <p className="text-xl font-bold mb-4">₹{amount.toFixed(2)}</p>
-            )}
+            <p className="text-xl font-bold mb-4">₹{amount.toFixed(2)}</p>
           </div>
           
           <div className="grid grid-cols-3 gap-3 w-full mt-2">
