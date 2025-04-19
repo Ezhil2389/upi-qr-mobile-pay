@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import QRDisplay from "@/components/QRDisplay";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,7 @@ const Index = () => {
 
       <div className="w-full max-w-md space-y-6">
         <QRDisplay 
-          upiId="example@upi" 
+          upiId="ravichandran.sa@okicici" 
           amount={500} 
         />
       </div>
